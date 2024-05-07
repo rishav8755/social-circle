@@ -1,0 +1,33 @@
+.hero{
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background: linear-gradient(rgba(8,0,58,0.7),rgba(8,0,58,0.7)),url('../../assets/hero.png');
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.hero-text{
+text-align: center;
+max-width: 800px;
+padding-right: 100px;
+}
+.hero-text h1{
+    font-size: 60px;
+    font-weight: 600;
+    padding-bottom: 10px;
+}
+.hero-text p{
+color: white;
+margin-bottom: 110px;
+line-height: 1.4;
+
+
+}
+.hero-text button{
+    margin-bottom: 90px;
+    color: black;
+    
+}

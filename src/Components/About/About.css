@@ -1,0 +1,40 @@
+.about{
+margin: 100px auto;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    display: flex;
+}
+ .about-left{
+    flex-basis: 40%;
+    position: relative;
+ }
+ .about-right{
+    flex-basis: 56%;
+ }
+ .about-img{
+    width: 100%;
+    border-radius: 10px;
+ }
+ .play-icon{
+    position: absolute;
+    width: 60px;
+    top: 50%;
+    left: 45%;
+    transform: translate(-50% -50%);
+ }
+ .about h3{
+    font-weight: 600;
+    font-weight: 16px;
+    color:rgb(58, 58, 72);
+ }
+ .about h2{
+    font-size: 40px;
+    color: #000f38;
+    margin: 10px 0;
+    max-width: 400px;
+ }
+ .about p{
+    margin-bottom: 15px;
+    color: #676767;
+ }
