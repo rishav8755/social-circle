@@ -9,7 +9,7 @@ import white_arrow from '../../assets/white-arrow.png'
 const Contact = () => {
   
 
-   const [result, setResult] = React.useState("");
+   const [, setResult] = React.useState("");
 
     const onSubmit = async (event) => {
       event.preventDefault();
@@ -18,7 +18,7 @@ const Contact = () => {
   
       formData.append("access_key", "40218f80-6a2e-4726-9ff0-133925d94d71");
   
-      const data = await fetch("https://api.web3forms.com/submit", {
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         body: formData
       }).then((res) => res.json());
