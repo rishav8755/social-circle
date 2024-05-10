@@ -8,7 +8,7 @@ import white_arrow from '../../assets/white-arrow.png'
 const Contact = () => {
   
 
-    const [result, setResult] = React.useState("");
+   /* const [result, setResult] = React.useState("");
 
     const onSubmit = async (event) => {
       event.preventDefault();
@@ -32,7 +32,7 @@ const Contact = () => {
         console.log("Error", response);
         setResult(response.message);
       }
-    };
+    };*/
     return (
 
     <div className='Contact'>
