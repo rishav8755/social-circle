@@ -20,7 +20,7 @@ const Contact = () => {
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         body: formData
-      }).then((res) => res.json());
+      }).then((response) => response.json());
   
   
       if (response.success) {
