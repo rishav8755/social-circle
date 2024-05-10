@@ -23,14 +23,14 @@ const Contact = () => {
       }).then((res) => res.json());
   
   
-      if (res.success) {
+      if (response.success) {
         
-        console.log("Success", res);
-        setResult(res.message);
+        console.log("Success", response);
+        setResult(response.message);
 
       } else {
-        console.log("Error", res);
-        setResult(res.message);
+        console.log("Error", response);
+        setResult(response.message);
       }
     };
     return (
