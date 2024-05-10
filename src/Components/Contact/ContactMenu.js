@@ -1,14 +1,9 @@
-import React from 'react'
-import './Contact.css'
-import msg_icon from '../../assets/msg-icon.png'
-import mail_icon from '../../assets/mail-icon.png'
-import phone_icon from '../../assets/phone-icon.png'
-import location_icon from '../../assets/location-icon.png'
+/* eslint-disable no-unused-vars */
+import React, { useState } from "react";
 import emailjs from "emailjs-com";
 import DOMPurify from "dompurify";
 
-const Contact = () => {
-  
+export default function ContactMenu() {
   const initialState = {
     name: "",
     email: "",
@@ -83,7 +78,7 @@ const Contact = () => {
     if (!message.trim()) {
       errors.message = "Message is required";
     }
-    
+
     return errors;
   };
 
@@ -91,37 +86,70 @@ const Contact = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(value);
   };
-    return (
-      
 
-    <div className='Contact'>
-        <div className="Contact-col">
-            <h3>Send us a Message <img src={msg_icon} alt="" /></h3>
-            <p>At the end of the day, users want to know from brands that their voices will be heard one way or another. Adding in additional elements like phone numbers, email addresses, and social links gives users the opportunity to reach out on multiple platforms.</p>
-            <ul>
-                <li><img src={mail_icon} alt="" />Contact@gmail.com</li>
-                <li><img src={phone_icon} alt="" />
-                    +91 123-456-7890
-                </li>
-                <li><img src={location_icon} alt="" />77 Massachusetts Ave,Cambridge<br/> MA 02151, United States</li>
-            </ul>
+  return (
+    <div className="contact-menu">
+      {!isSent && (
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="name">:</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Name"
+              value={formData.name}
+              onChange={handleChange}
+              className={errors.name ? "error" : ""}
+              disabled={isLoading}
+            />
+            {errors.name && (
+              <span className="error-message">{errors.name}</span>
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="email">:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              className={errors.email ? "error" : ""}
+              disabled={isLoading}
+            />
+            {errors.email && (
+              <span className="error-message">{errors.email}</span>
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="message">:</label>
+            <textarea
+              id="message"
+              name="message"
+              placeholder="Message"
+              value={formData.message}
+              onChange={handleChange}
+              className={errors.message ? "error" : ""}
+              disabled={isLoading}
+            ></textarea>
+            {errors.message && (
+              <span className="error-message">{errors.message}</span>
+            )}
+          </div>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "SENDING..." : "SUBMIT"}
+          </button>
+        </form>
+      )}
+      {isSent && (
+        <div className="success-message">
+          <p>SUCCESS!</p>
+          <p>Your message has been successfully sent!</p>
+          <p>You can safely leave this page.</p>
         </div>
-      <div className="contact-col">
-  
-        {/* <form onSubmit={onSubmit}>
-        <lable>Your Name</lable>
-        <input type="text" name='name' placeholder='Enter Your Name'
-        required/>
-        <lable>Phone Number</lable>
-        <input type="tel" name='phone' placeholder='Enter Your mobile number' required/> 
-        <label className='1'>Write your messages here </label> 
-        <textarea name="message" rows="6" placeholder='Enter your message' required></textarea>
-        <button type='submit' className='btn dark-btn'>Submit now <img src={white_arrow} alt="" /></button>
-        </form>  */}
-        <span>sending</span>
-      </div>
+      )}
     </div>
-  )
-}
-
-export default Contact
+  );
+}  
