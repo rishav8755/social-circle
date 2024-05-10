@@ -9,7 +9,7 @@ import white_arrow from '../../assets/white-arrow.png'
 const Contact = () => {
   
 
-   const [, setResult] = React.useState("");
+   const [result, setResult] = React.useState("");
 
     const onSubmit = async (event) => {
       event.preventDefault();
@@ -21,17 +21,17 @@ const Contact = () => {
       const data = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         body: formData
-      }).then((data) => data.json());
+      }).then((res) => res.json());
   
   
-      if (data.success) {
+      if (res.success) {
         
-        console.log("Success", data);
-        setResult(data.message);
+        console.log("Succes", res);
+        setResult(res.message);
 
       } else {
-        console.log("Error", data);
-        setResult(data.message);
+        console.log("Error", res);
+        setResult(res.message);
       }
     };
     return (
