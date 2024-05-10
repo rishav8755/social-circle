@@ -1,14 +1,13 @@
-import React from 'react'
-import './Contact.css'
-import msg_icon from '../../assets/msg-icon.png'
-import mail_icon from '../../assets/mail-icon.png'
-import phone_icon from '../../assets/phone-icon.png'
-import location_icon from '../../assets/location-icon.png'
+import React, { useState } from 'react';
+import './Contact.css';
+import msg_icon from '../../assets/msg-icon.png';
+import mail_icon from '../../assets/mail-icon.png';
+import phone_icon from '../../assets/phone-icon.png';
+import location_icon from '../../assets/location-icon.png';
+import white_arrow from '../../assets/white-arrow.png';
 import emailjs from "emailjs-com";
-import DOMPurify from "dompurify";
 
 const Contact = () => {
-  
   const initialState = {
     name: "",
     email: "",
@@ -23,7 +22,7 @@ const Contact = () => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: value,
+      [name]: value
     }));
   };
 
@@ -34,24 +33,21 @@ const Contact = () => {
       setErrors(validateErrors);
       return;
     }
-
     setIsLoading(true);
-
-    const { name, email, message } = formData;
-    const sanitizedData = {
-      name: " " + DOMPurify.sanitize(name),
-      email: " " + DOMPurify.sanitize(email),
-      message: " " + DOMPurify.sanitize(message),
-    };
+    const { name,  email, message } = formData;
 
     const serviceID = process.env.REACT_APP_EMAILJS_SERVICE_ID;
     const templateID = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
     const userID = process.env.REACT_APP_EMAILJS_USER_ID;
 
-    console.log(serviceID, templateID, userID)
+    const templateParams = {
+      name,
+      email,
     
-    emailjs
-      .send(serviceID, templateID, sanitizedData, userID)
+      message,
+    };
+
+    emailjs.send(serviceID, templateID, templateParams, userID)
       .then((response) => {
         console.log("Email is sent successfully!", response.text);
         setFormData(initialState);
@@ -60,6 +56,8 @@ const Contact = () => {
       })
       .catch((error) => {
         console.error("Email sending failed", error);
+        alert("Email sending failed. Please try again."); // Notify the user about the failure
+
       })
       .finally(() => {
         setIsLoading(false);
@@ -67,61 +65,85 @@ const Contact = () => {
   };
 
   const validateForm = () => {
-    const { name, email, message } = formData;
+    const { name, email,  message } = formData;
     const errors = {};
-
     if (!name.trim()) {
       errors.name = "Name is required";
     }
-
     if (!email.trim()) {
       errors.email = "Email is required";
     } else if (!isValidEmail(email)) {
       errors.email = "Invalid email format";
     }
-
+   
     if (!message.trim()) {
       errors.message = "Message is required";
     }
-    
     return errors;
   };
 
   const isValidEmail = (value) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^\S+@\S+\.\S+$/;
     return emailRegex.test(value);
   };
-    return (
-      
 
+  return (
     <div className='Contact'>
-        <div className="Contact-col">
-            <h3>Send us a Message <img src={msg_icon} alt="" /></h3>
-            <p>At the end of the day, users want to know from brands that their voices will be heard one way or another. Adding in additional elements like phone numbers, email addresses, and social links gives users the opportunity to reach out on multiple platforms.</p>
-            <ul>
-                <li><img src={mail_icon} alt="" />Contact@gmail.com</li>
-                <li><img src={phone_icon} alt="" />
-                    +91 123-456-7890
-                </li>
-                <li><img src={location_icon} alt="" />77 Massachusetts Ave,Cambridge<br/> MA 02151, United States</li>
-            </ul>
-        </div>
-      <div className="contact-col">
-  
-        {/* <form onSubmit={onSubmit}>
-        <lable>Your Name</lable>
-        <input type="text" name='name' placeholder='Enter Your Name'
-        required/>
-        <lable>Phone Number</lable>
-        <input type="tel" name='phone' placeholder='Enter Your mobile number' required/> 
-        <label className='1'>Write your messages here </label> 
-        <textarea name="message" rows="6" placeholder='Enter your message' required></textarea>
-        <button type='submit' className='btn dark-btn'>Submit now <img src={white_arrow} alt="" /></button>
-        </form>  */}
-        <span>sending</span>
+      <div className="Contact-col">
+        <h3>Send us a Message <img src={msg_icon} alt="" /></h3>
+        <p>At the end of the day, users want to know from brands that their voices will be heard one way or another. Adding in additional elements like phone numbers, email addresses, and social links gives users the opportunity to reach out on multiple platforms.</p>
+        <ul>
+          <li><img src={mail_icon} alt="" />Contact@gmail.com</li>
+          <li><img src={phone_icon} alt="" /> +91 123-456-7890 </li>
+          <li><img src={location_icon} alt="" />77 Massachusetts Ave,Cambridge<br /> MA 02151, United States</li>
+        </ul>
       </div>
+      <div className="contact-col">
+      {!isSent && (
+        <form onSubmit={handleSubmit}>
+          <label>Your Name</label>
+          <input
+            type="text"
+            name='name'
+            placeholder='Enter Your Name'
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+          {errors.name && <span className="error">{errors.name}</span>}
+          <label>email</label>
+          <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              className={errors.email ? "error" : ""}
+              disabled={isLoading}
+            />
+          {errors.email && <span className="error">{errors.email}</span>}
+          <label className='1'>Write your messages here </label>
+          <textarea
+            name="message"
+            rows="6"
+            placeholder='Enter your message'
+            value={formData.message}
+            onChange={handleChange}
+            required
+          ></textarea>
+          {errors.message && <span className="error">{errors.message}</span>}
+          <button type='submit' className='btn dark-btn' disabled={isLoading}>
+            {isLoading ? 'Sending...' : 'Submit now'}
+            {!isLoading && <img src={white_arrow} alt="" />}
+          </button>
+          {isSent && <p>Email sent successfully!</p>}
+        </form>
+      )}      
+      </div>
+      
     </div>
-  )
-}
+  );
+};
 
-export default Contact
+export default Contact;
